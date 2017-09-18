@@ -1,0 +1,17 @@
+CREATE TABLE IF NOT EXISTS news(
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    publicationDate INTEGER,
+    topRatedPosition INTEGER NOT NULL DEFAULT -1,
+    authorId INTEGER,
+    FOREIGN KEY (authorId) REFERENCES author(id) ON DELETE CASCADE
+);
+
+selectNewsOrderByDate:
+SELECT * FROM news ORDER BY publicationDate DESC;
+
+insertItem:
+INSERT INTO news(title) VALUES(?);
+
+selectNewsItem:
+SELECT * FROM news WHERE id = ?;
