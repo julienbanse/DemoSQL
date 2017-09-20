@@ -9,7 +9,7 @@ import com.google.auto.value.AutoValue
 abstract class Author : AuthorModel {
 
     companion object {
-
+        @JvmField
         val FACTORY: AuthorModel.Factory<Author> = AuthorModel.Factory<Author>(AuthorModel.Creator<Author>(::AutoValue_Author))
 
     }

@@ -1,11 +1,14 @@
 package sample.jbanse.demosql.data.controller
 
-import android.database.Cursor
 import com.squareup.sqlbrite2.BriteDatabase
-import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
+import sample.jbanse.demosql.data.controller.model.NewsListItem
 import sample.jbanse.demosql.data.dao.News
+import sample.jbanse.demosql.data.dao.NewsDetail
+import sample.jbanse.demosql.data.dao.NewsItem
 import sample.jbanse.demosql.data.dao.NewsModel
+import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,27 +20,33 @@ class Repository
 @Inject
 constructor(private val db: BriteDatabase) {
 
-    fun insertNews(title: String): Completable {
-        return Completable.fromCallable {
-            val insertItem = NewsModel.InsertItem(db.readableDatabase)
-                    .apply { bind(title) }
-            db.executeInsert(insertItem.table, insertItem.program)
+    fun insertNews(title: String, publicationDate: Date, position: Int): Single<Long> {
+        return Single.fromCallable {
+            val select = NewsModel.InsertItem(db.readableDatabase, News.FACTORY).apply {
+                bind(title, publicationDate, position)
+            }
+            db.executeInsert(select.table, select.program)
         }
     }
 
-    private val newsMapper = News.FACTORY.selectNewsItemMapper()
-
-    fun selectNewsOrderByDate(): Observable<List<News>> {
-        News.FACTORY.selectNewsOrderByDate().let { request ->
-            return db.createQuery(request.tables, request.statement, *request.args)
-                    .mapToList { cursor -> newsMapper.map(cursor) }
-        }
-    }
-
-    fun selectNews(newsId: Long): Observable<Cursor> {
-        News.FACTORY.selectNewsItem(newsId).let { statement ->
+    fun selectNewsOrderByDate(): Observable<List<NewsListItem>> {
+        News.FACTORY.newsListItemOrderByDate().let { statement ->
             return db.createQuery(statement.tables, statement.statement, *statement.args)
-                    .map { query -> query.run() }
+                    .mapToList { NewsItem.NEWS_ITEM_MAPPER.map(it) }
+        }
+    }
+
+    fun selectNewsOrderByPosition(): Observable<List<NewsListItem>> {
+        News.FACTORY.newsListItemOrderByPosition().let { statement ->
+            return db.createQuery(statement.tables, statement.statement, *statement.args)
+                    .mapToList { NewsItem.NEWS_ITEM_MAPPER.map(it) }
+        }
+    }
+
+    fun selectNewsDetail(newsId: Long): Observable<NewsDetail> {
+        News.FACTORY.selectNewsDetail(newsId).let { select ->
+            return db.createQuery(select.tables, select.statement, *select.args)
+                    .mapToOne { NewsDetail.MAPPER.map(it) }
         }
     }
 }

@@ -1,17 +1,31 @@
+import java.lang.Integer;
+import java.util.Date;
+
 CREATE TABLE IF NOT EXISTS news(
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     title TEXT,
-    publicationDate INTEGER,
-    topRatedPosition INTEGER NOT NULL DEFAULT -1,
+    publicationDate INTEGER as Date NOT NULL,
+    topRatedPosition INTEGER as Integer NOT NULL DEFAULT -1,
     authorId INTEGER,
     FOREIGN KEY (authorId) REFERENCES author(id) ON DELETE CASCADE
 );
 
-selectNewsOrderByDate:
-SELECT * FROM news ORDER BY publicationDate DESC;
+newsListItemOrderByDate:
+SELECT id, title, publicationDate
+FROM news
+ORDER BY publicationDate DESC;
+
+newsListItemOrderByPosition:
+SELECT id, title, publicationDate
+FROM news
+WHERE topRatedPosition != -1
+ORDER BY topRatedPosition ASC;
 
 insertItem:
-INSERT INTO news(title) VALUES(?);
+INSERT INTO news(title,publicationDate, topRatedPosition) VALUES(?, ?, ?);
 
-selectNewsItem:
-SELECT * FROM news WHERE id = ?;
+selectNewsDetail:
+SELECT *
+FROM news
+LEFT OUTER JOIN author ON author.id = news.authorId
+WHERE news.id = ?;
