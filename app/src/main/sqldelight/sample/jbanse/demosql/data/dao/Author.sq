@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS author(
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    firstname TEXT,
+    avatarUrl TEXT
+);

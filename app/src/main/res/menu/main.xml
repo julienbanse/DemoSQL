@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/modifySort"
+          android:contentDescription="Modifier le tri"
+          android:icon="@drawable/ic_sort_white_24dp"
+          android:title="sort"
+          android:orderInCategory="2"
+          app:showAsAction="always"/>
+
+    <item android:id="@+id/addItem"
+          android:contentDescription="Ajouter un item"
+          android:icon="@drawable/ic_add_circle_outline_white_24dp"
+          android:title="add"
+          android:orderInCategory="1"
+          app:showAsAction="always"/>
+
+</menu>
