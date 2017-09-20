@@ -9,6 +9,6 @@ import com.google.auto.value.AutoValue
 abstract class NewsDetail : NewsModel.SelectNewsDetailModel<News, Author> {
     companion object {
         @JvmField
-        val MAPPER: NewsModel.SelectNewsDetailMapper<News, Author, NewsDetail> = News.FACTORY.selectNewsDetailMapper({ news, author -> AutoValue_NewsDetail(news, author) }, Author.FACTORY)
+        val MAPPER: NewsModel.SelectNewsDetailMapper<News, Author, NewsDetail> = News.FACTORY.selectNewsDetailMapper(::AutoValue_NewsDetail, Author.FACTORY)
     }
 }
