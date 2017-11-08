@@ -45,6 +45,7 @@ constructor(private val repository: Repository) : ViewModel() {
 
     fun addItem(count: Int) {
         disposables.add(addItemOperation(count)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ Log.i(TAG, "item added") },
                         { Log.e(TAG, "item add error", it) }))
