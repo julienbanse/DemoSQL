@@ -4,11 +4,14 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.util.Log
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import sample.jbanse.demosql.data.controller.Repository
 import sample.jbanse.demosql.data.controller.model.NewsListItem
 import java.util.Date
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -41,8 +44,22 @@ constructor(private val repository: Repository) : ViewModel() {
     }
 
     fun addItem(count: Int) {
+        disposables.add(addItemOperation(count)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ Log.i(TAG, "item added") },
+                        { Log.e(TAG, "item add error", it) }))
+    }
+
+    private fun addItemOperation(count: Int): Single<Long> {
+        return repository.insertNews("title $count", Date(), count)
+    }
+
+    fun addLater(delay: Long, count: Int) {
         disposables.add(
-                repository.insertNews("title $count", Date(), count)
+                Single.just(count)
+                        .subscribeOn(Schedulers.io())
+                        .delay(delay, TimeUnit.SECONDS)
+                        .flatMap { addItemOperation(count) }
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({ Log.i(TAG, "item added") },
                                 { Log.e(TAG, "item add error", it) })
