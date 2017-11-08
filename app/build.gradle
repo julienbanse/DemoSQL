@@ -48,6 +48,12 @@ dependencies {
     //kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
 
+    //android architecture
+
+    implementation "android.arch.lifecycle:extensions:${versions.arch_comp}"
+    implementation "android.arch.lifecycle:reactivestreams:${versions.arch_comp}"
+    kapt "android.arch.lifecycle:compiler:${versions.arch_comp}"
+
     //injection
     implementation "com.google.dagger:dagger-android:${versions.dagger}"
     implementation "com.google.dagger:dagger-android-support:${versions.dagger}"
