@@ -2,9 +2,10 @@
 
 buildscript {
     ext.versions = [
-            'support_library': '26.1.0',
-            'kotlin'         : '1.1.4-3',
-            'dagger'         : '2.11'
+            'support_library': '27.0.0',
+            'kotlin'         : '1.1.51',
+            'dagger'         : '2.13',
+            'arch_comp'      : '1.0.0'
     ]
 
     repositories {
@@ -12,7 +13,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-beta6'
+        classpath 'com.android.tools.build:gradle:3.0.0'
         classpath 'com.squareup.sqldelight:gradle-plugin:0.6.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
         classpath "org.jetbrains.kotlin:kotlin-android-extensions:${versions.kotlin}"
