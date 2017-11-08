@@ -22,6 +22,8 @@ import javax.inject.Singleton
 interface SampleComponent : AndroidInjector<SampleApplication> {
 
     @Component.Builder
-    abstract class Builder : AndroidInjector.Builder<SampleApplication>()
+    abstract class Builder : AndroidInjector.Builder<SampleApplication>() {
+        abstract fun appModule(appModule: AppModule): Builder
+    }
 
 }

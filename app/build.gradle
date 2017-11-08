@@ -47,6 +47,9 @@ dependencies {
     kapt 'com.google.auto.value:auto-value:1.5.2'
     compileOnly 'com.google.auto.value:auto-value:1.5.2'
 
+    // leak detection
+    implementation "com.squareup.leakcanary:leakcanary-android:1.5.4"
+
     //bdd
     implementation 'com.squareup.sqlbrite2:sqlbrite:2.0.0'
 
