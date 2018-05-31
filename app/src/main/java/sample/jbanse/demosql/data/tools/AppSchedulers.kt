@@ -9,4 +9,5 @@ import io.reactivex.schedulers.Schedulers
  */
 class AppSchedulers(val database: Scheduler = Schedulers.single(),
                     val ui: Scheduler = AndroidSchedulers.mainThread(),
-                    val disk: Scheduler = Schedulers.io(), val network: Scheduler = Schedulers.io())
+                    val disk: Scheduler = Schedulers.io(),
+                    val network: Scheduler = Schedulers.io())
