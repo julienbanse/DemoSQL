@@ -1,6 +1,8 @@
 package sample.jbanse.demosql.ui
 
 import android.content.Context
+import android.support.v7.recyclerview.extensions.ListAdapter
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,9 +13,7 @@ import java.text.DateFormat
 /**
  * Created by julien on 17/09/2017.
  */
-class NewsListAdapter(context: Context) : RecyclerView.Adapter<NewsListAdapter.NewsViewHolder>() {
-
-    private val data = mutableListOf<NewsListItem>()
+class NewsListAdapter(context: Context) : ListAdapter<NewsListItem, NewsListAdapter.NewsViewHolder>(NewsListItemDiff()) {
 
     private val layoutInflater = LayoutInflater.from(context)
 
@@ -24,23 +24,19 @@ class NewsListAdapter(context: Context) : RecyclerView.Adapter<NewsListAdapter.N
     }
 
     override fun getItemId(position: Int): Long {
-        return data[position].id()
+        return getItem(position).id()
     }
 
     fun updateData(list: List<NewsListItem>) {
-        data.clear()
-        data.addAll(list)
-        notifyDataSetChanged()
+        submitList(list)
     }
 
-    override fun getItemCount(): Int = data.size
-
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): NewsViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         return NewsViewHolder(layoutInflater, parent)
     }
 
-    override fun onBindViewHolder(holder: NewsViewHolder?, position: Int) {
-        holder?.bindNews(data[position], dateFormatter)
+    override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
+        holder.bindNews(getItem(position), dateFormatter)
     }
 
     inner class NewsViewHolder(layoutInflater: LayoutInflater, parent: ViewGroup?) : RecyclerView.ViewHolder(layoutInflater.inflate(android.R.layout.simple_list_item_2, parent, false)) {
@@ -52,4 +48,15 @@ class NewsListAdapter(context: Context) : RecyclerView.Adapter<NewsListAdapter.N
             subTitle.text = dateFormat.format(item.publicationDate())
         }
     }
+}
+
+class NewsListItemDiff : DiffUtil.ItemCallback<NewsListItem>() {
+    override fun areItemsTheSame(oldItem: NewsListItem?, newItem: NewsListItem?): Boolean {
+        return oldItem?.id() == newItem?.id()
+    }
+
+    override fun areContentsTheSame(oldItem: NewsListItem?, newItem: NewsListItem?): Boolean {
+        return oldItem?.publicationDate()?.equals(newItem?.publicationDate()) ?: false
+    }
+
 }
