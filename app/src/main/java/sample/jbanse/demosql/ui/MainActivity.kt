@@ -15,8 +15,6 @@ import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
 
-    private val SAVE_STATE_SORT_BY_DATE = "IS_SORT_BY_DATE"
-
     private val recycler: RecyclerView by lazy { findViewById<RecyclerView>(R.id.mainRv) }
 
     private val adapter: NewsListAdapter by lazy { NewsListAdapter(this) }
@@ -72,5 +70,11 @@ class MainActivity : DaggerAppCompatActivity() {
     private fun observeList() {
         viewModel.newsListLiveData().observe(this,
                 Observer<List<NewsListItem>> { t -> adapter.updateData(t ?: emptyList()) })
+    }
+
+    companion object {
+
+        private const val SAVE_STATE_SORT_BY_DATE = "IS_SORT_BY_DATE"
+
     }
 }

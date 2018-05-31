@@ -21,7 +21,9 @@ class MainViewModel
 @Inject
 constructor(private val repository: Repository) : ViewModel() {
 
-    private val TAG = "MainViewModel"
+    companion object {
+        private const val TAG = "MainViewModel"
+    }
 
     var sortByDate = true
         set(value) {
