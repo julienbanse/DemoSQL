@@ -2,10 +2,10 @@
 
 buildscript {
     ext.versions = [
-            'arch_comp'      : '1.0.0'
             'support_library': '27.1.1',
             'kotlin'         : '1.2.41',
             'dagger'         : '2.16',
+            'arch_comp'      : '1.1.1'
     ]
 
     repositories {
