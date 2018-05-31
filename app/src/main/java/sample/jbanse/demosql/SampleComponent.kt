@@ -13,17 +13,19 @@ import javax.inject.Singleton
  * Created by julien on 16/09/2017.
  */
 @Singleton
-@Component(modules = arrayOf(
-        AndroidSupportInjectionModule::class,
-        AppModule::class,
-        BDDModule::class,
-        ViewModelModule::class,
-        MainBuilder::class))
+@Component(modules = [
+    AndroidSupportInjectionModule::class,
+    AppModule::class,
+    BDDModule::class,
+    ViewModelModule::class,
+    MainBuilder::class])
 interface SampleComponent : AndroidInjector<SampleApplication> {
 
     @Component.Builder
     abstract class Builder : AndroidInjector.Builder<SampleApplication>() {
         abstract fun appModule(appModule: AppModule): Builder
+
+
     }
 
 }

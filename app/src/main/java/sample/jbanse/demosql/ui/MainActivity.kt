@@ -21,7 +21,8 @@ class MainActivity : DaggerAppCompatActivity() {
 
     private val adapter: NewsListAdapter by lazy { NewsListAdapter(this) }
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var viewModel: MainViewModel
 
