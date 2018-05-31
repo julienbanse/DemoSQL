@@ -6,6 +6,7 @@ import com.squareup.leakcanary.LeakCanary
 import dagger.Module
 import dagger.Provides
 import sample.jbanse.demosql.SampleApplication
+import timber.log.Timber
 
 /**
  * Created by julien on 16/09/2017.
@@ -14,6 +15,7 @@ import sample.jbanse.demosql.SampleApplication
 class AppModule(application: Application) {
 
     init {
+        Timber.plant(Timber.DebugTree())
         if (!LeakCanary.isInAnalyzerProcess(application))
             LeakCanary.install(application)
     }

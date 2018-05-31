@@ -1,6 +1,6 @@
 package sample.jbanse.demosql.data.controller
 
-import com.squareup.sqlbrite2.BriteDatabase
+import com.squareup.sqlbrite3.BriteDatabase
 import io.reactivex.Observable
 import io.reactivex.Single
 import sample.jbanse.demosql.data.controller.model.NewsListItem
@@ -25,27 +25,27 @@ constructor(private val db: BriteDatabase) {
             val select = NewsModel.InsertItem(db.readableDatabase, News.FACTORY).apply {
                 bind(title, publicationDate, position)
             }
-            db.executeInsert(select.table, select.program)
+            db.executeInsert(select.table, select)
         }
     }
 
     fun selectNewsOrderByDate(): Observable<List<NewsListItem>> {
         News.FACTORY.newsListItemOrderByDate().let { statement ->
-            return db.createQuery(statement.tables, statement.statement, *statement.args)
+            return db.createQuery(statement.tables, statement)
                     .mapToList { NewsItem.NEWS_ITEM_MAPPER.map(it) }
         }
     }
 
     fun selectNewsOrderByPosition(): Observable<List<NewsListItem>> {
         News.FACTORY.newsListItemOrderByPosition().let { statement ->
-            return db.createQuery(statement.tables, statement.statement, *statement.args)
+            return db.createQuery(statement.tables, statement)
                     .mapToList { NewsItem.NEWS_ITEM_MAPPER.map(it) }
         }
     }
 
     fun selectNewsDetail(newsId: Long): Observable<NewsDetail> {
         News.FACTORY.selectNewsDetail(newsId).let { select ->
-            return db.createQuery(select.tables, select.statement, *select.args)
+            return db.createQuery(select.tables, select)
                     .mapToOne { NewsDetail.MAPPER.map(it) }
         }
     }
