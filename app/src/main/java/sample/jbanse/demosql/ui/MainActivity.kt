@@ -40,7 +40,7 @@ class MainActivity : DaggerAppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.addItem -> {
-                viewModel.addLater(5, adapter.itemCount)
+                viewModel.addLater(1, adapter.itemCount)
                 true
             }
             R.id.modifySort -> {
