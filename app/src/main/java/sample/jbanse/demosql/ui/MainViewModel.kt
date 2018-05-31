@@ -74,7 +74,6 @@ constructor(private val repository: Repository) : ViewModel() {
     private fun loadNewsOrderByDate() {
         disposables.clear()
         disposables.add(repository.selectNewsOrderByDate()
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ newsList.postValue(it) },
                         { Log.d(TAG, "news oder by date", it) })
         )
@@ -83,7 +82,6 @@ constructor(private val repository: Repository) : ViewModel() {
     private fun loadNewsOrderByPosition() {
         disposables.clear()
         disposables.add(repository.selectNewsOrderByPosition()
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ newsList.postValue(it) },
                         { Log.d(TAG, "news oder by date", it) }))
     }
