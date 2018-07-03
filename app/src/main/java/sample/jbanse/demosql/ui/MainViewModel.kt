@@ -5,11 +5,10 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.util.Log
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import sample.jbanse.demosql.data.controller.Repository
 import sample.jbanse.demosql.data.controller.model.NewsListItem
+import sample.jbanse.demosql.data.tools.AppSchedulers
 import java.util.Date
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -19,7 +18,7 @@ import javax.inject.Inject
  */
 class MainViewModel
 @Inject
-constructor(private val repository: Repository) : ViewModel() {
+constructor(private val repository: Repository, private val appSchedulers: AppSchedulers) : ViewModel() {
 
     companion object {
         private const val TAG = "MainViewModel"
@@ -47,8 +46,8 @@ constructor(private val repository: Repository) : ViewModel() {
 
     fun addItem(count: Int) {
         disposables.add(addItemOperation(count)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(appSchedulers.database)
+                .observeOn(appSchedulers.ui)
                 .subscribe({ Log.i(TAG, "item added") },
                         { Log.e(TAG, "item add error", it) }))
     }
@@ -60,10 +59,10 @@ constructor(private val repository: Repository) : ViewModel() {
     fun addLater(delay: Long, count: Int) {
         disposables.add(
                 Single.just(count)
-                        .subscribeOn(Schedulers.io())
+                        .subscribeOn(appSchedulers.disk)
                         .delay(delay, TimeUnit.SECONDS)
                         .flatMap { addItemOperation(count) }
-                        .observeOn(AndroidSchedulers.mainThread())
+                        .observeOn(appSchedulers.ui)
                         .subscribe({ Log.i(TAG, "item added") },
                                 { Log.e(TAG, "item add error", it) })
         )
