@@ -3,7 +3,7 @@
 buildscript {
     ext.versions = [
             'support_library': '27.1.1',
-            'kotlin'         : '1.2.41',
+            'kotlin'         : '1.2.50',
             'dagger'         : '2.16',
             'arch_comp'      : '1.1.1',
             'sqldelight' : '1.0.0-alpha4'
