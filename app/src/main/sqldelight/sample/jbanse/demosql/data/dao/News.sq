@@ -24,7 +24,7 @@ ORDER BY topRatedPosition ASC;
 insertItem:
 INSERT INTO news(title,publicationDate, topRatedPosition) VALUES(?, ?, ?);
 
-selectNewsDetail:
+newsDetail:
 SELECT *
 FROM news
 LEFT OUTER JOIN author ON author.id = news.authorId

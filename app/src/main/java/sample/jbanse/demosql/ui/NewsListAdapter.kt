@@ -24,7 +24,7 @@ class NewsListAdapter(context: Context) : ListAdapter<NewsListItem, NewsListAdap
     }
 
     override fun getItemId(position: Int): Long {
-        return getItem(position).id()
+        return getItem(position).id
     }
 
     fun updateData(list: List<NewsListItem>) {
@@ -44,19 +44,19 @@ class NewsListAdapter(context: Context) : ListAdapter<NewsListItem, NewsListAdap
         private val subTitle: TextView by lazy { itemView.findViewById<TextView>(android.R.id.text2) }
 
         fun bindNews(item: NewsListItem, dateFormat: DateFormat) {
-            title.text = item.title()
-            subTitle.text = dateFormat.format(item.publicationDate())
+            title.text = item.title
+            subTitle.text = dateFormat.format(item.publicationDate)
         }
     }
 }
 
 class NewsListItemDiff : DiffUtil.ItemCallback<NewsListItem>() {
     override fun areItemsTheSame(oldItem: NewsListItem?, newItem: NewsListItem?): Boolean {
-        return oldItem?.id() == newItem?.id()
+        return oldItem?.id == newItem?.id
     }
 
     override fun areContentsTheSame(oldItem: NewsListItem?, newItem: NewsListItem?): Boolean {
-        return oldItem?.publicationDate()?.equals(newItem?.publicationDate()) ?: false
+        return oldItem?.publicationDate?.equals(newItem?.publicationDate) ?: false
     }
 
 }

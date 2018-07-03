@@ -1,15 +1,14 @@
 package sample.jbanse.demosql.data.module
 
-import android.arch.persistence.db.SupportSQLiteOpenHelper
-import android.arch.persistence.db.framework.FrameworkSQLiteOpenHelperFactory
 import android.content.Context
-import com.squareup.sqlbrite3.BriteDatabase
-import com.squareup.sqlbrite3.SqlBrite
+import com.squareup.sqldelight.android.create
+import com.squareup.sqldelight.db.SqlDatabase
 import dagger.Module
 import dagger.Provides
+import sample.jbanse.demosql.QueryWrapper
+import sample.jbanse.demosql.data.dao.News
+import sample.jbanse.demosql.data.db.DateAdapter
 import sample.jbanse.demosql.data.db.DbHelper
-import sample.jbanse.demosql.data.tools.AppSchedulers
-import timber.log.Timber
 import javax.inject.Singleton
 
 /**
@@ -19,25 +18,13 @@ import javax.inject.Singleton
 class BDDModule {
 
     @Provides
-    fun createSqlBrite(): SqlBrite {
-        return SqlBrite.Builder().logger { message -> Timber.tag("BDD").d(message) }
-                .build()
-    }
-
-    @Provides
-    fun openHelper(context: Context): SupportSQLiteOpenHelper {
-        val configuration = SupportSQLiteOpenHelper.Configuration.builder(context)
-                .name(DbHelper.NAME)
-                .callback(DbHelper())
-                .build()
-        return FrameworkSQLiteOpenHelperFactory().create(configuration)
+    fun sqldelight(context: Context): SqlDatabase {
+        return QueryWrapper.create(context, DbHelper.NAME, DbHelper())
     }
 
     @Singleton
     @Provides
-    fun briteDatabase(sqlBrite: SqlBrite, sqLiteOpenHelper: SupportSQLiteOpenHelper, schedulers: AppSchedulers): BriteDatabase {
-        val briteDatabase = sqlBrite.wrapDatabaseHelper(sqLiteOpenHelper, schedulers.database)
-        briteDatabase.setLoggingEnabled(true)
-        return briteDatabase
+    fun queryWrapper(sqlDatabase: SqlDatabase): QueryWrapper {
+        return QueryWrapper(sqlDatabase, News.Adapter(DateAdapter()))
     }
 }
