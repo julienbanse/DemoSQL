@@ -48,9 +48,6 @@ dependencies {
     //log
     implementation "com.jakewharton.timber:timber:4.7.0"
 
-    kapt 'com.google.auto.value:auto-value:1.5.4'
-    compileOnly 'com.google.auto.value:auto-value:1.5.4'
-
     // leak detection
     implementation "com.squareup.leakcanary:leakcanary-android:1.5.4"
 
