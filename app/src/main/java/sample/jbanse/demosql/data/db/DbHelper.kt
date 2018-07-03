@@ -2,15 +2,15 @@ package sample.jbanse.demosql.data.db
 
 import android.arch.persistence.db.SupportSQLiteDatabase
 import android.arch.persistence.db.SupportSQLiteOpenHelper
-import sample.jbanse.demosql.data.dao.AuthorModel
-import sample.jbanse.demosql.data.dao.NewsModel
+import com.squareup.sqldelight.android.create
+import sample.jbanse.demosql.QueryWrapper
 
 /**
  * Created by julien on 16/09/2017.
  */
-class DbHelper : SupportSQLiteOpenHelper.Callback(VERSION) {
+class DbHelper : SupportSQLiteOpenHelper.Callback(QueryWrapper.version) {
     override fun onCreate(db: SupportSQLiteDatabase?) {
-        db?.let { createDb(it) }
+        db?.let { QueryWrapper.onCreate(QueryWrapper.create(it).getConnection()) }
     }
 
     override fun onUpgrade(db: SupportSQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -19,28 +19,19 @@ class DbHelper : SupportSQLiteOpenHelper.Callback(VERSION) {
 
     companion object {
 
-        const val VERSION = 1
-
         const val NAME = "demo.db"
 
     }
 
-    fun createDb(db: SupportSQLiteDatabase) {
-        db.execSQL(NewsModel.CREATE_TABLE)
-        db.execSQL(AuthorModel.CREATE_TABLE)
-    }
-
     fun updateDb(db: SupportSQLiteDatabase, oldVersion: Int, newVersion: Int) {
-
+        QueryWrapper.onMigrate(QueryWrapper.create(db).getConnection(), oldVersion, newVersion)
     }
 
     fun downgrade(db: SupportSQLiteDatabase) {
-        deleteDb(db)
-        createDb(db)
+
     }
 
     private fun deleteDb(db: SupportSQLiteDatabase) {
-        db.execSQL("DROP TABLE IF EXISTS ${NewsModel.TABLE_NAME}")
-        db.execSQL("DROP TABLE IF EXISTS ${AuthorModel.TABLE_NAME}")
+
     }
 }
