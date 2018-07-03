@@ -3,12 +3,12 @@ package sample.jbanse.demosql.ui
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.util.Log
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import sample.jbanse.demosql.data.controller.Repository
 import sample.jbanse.demosql.data.controller.model.NewsListItem
 import sample.jbanse.demosql.data.tools.AppSchedulers
+import timber.log.Timber
 import java.util.Date
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -19,10 +19,6 @@ import javax.inject.Inject
 class MainViewModel
 @Inject
 constructor(private val repository: Repository, private val appSchedulers: AppSchedulers) : ViewModel() {
-
-    companion object {
-        private const val TAG = "MainViewModel"
-    }
 
     var sortByDate = true
         set(value) {
@@ -48,8 +44,8 @@ constructor(private val repository: Repository, private val appSchedulers: AppSc
         disposables.add(addItemOperation(count)
                 .subscribeOn(appSchedulers.database)
                 .observeOn(appSchedulers.ui)
-                .subscribe({ Log.i(TAG, "item added") },
-                        { Log.e(TAG, "item add error", it) }))
+                .subscribe({ Timber.i("item added") },
+                        { Timber.e(it, "item add error") }))
     }
 
     private fun addItemOperation(count: Int): Single<Long> {
@@ -63,8 +59,8 @@ constructor(private val repository: Repository, private val appSchedulers: AppSc
                         .delay(delay, TimeUnit.SECONDS)
                         .flatMap { addItemOperation(count) }
                         .observeOn(appSchedulers.ui)
-                        .subscribe({ Log.i(TAG, "item added") },
-                                { Log.e(TAG, "item add error", it) })
+                        .subscribe({ Timber.i("item added") },
+                                { Timber.e(it, "item add error") })
         )
     }
 
@@ -74,7 +70,7 @@ constructor(private val repository: Repository, private val appSchedulers: AppSc
         disposables.clear()
         disposables.add(repository.selectNewsOrderByDate()
                 .subscribe({ newsList.postValue(it) },
-                        { Log.d(TAG, "news oder by date", it) })
+                        { Timber.d(it, "news oder by date") })
         )
     }
 
@@ -82,11 +78,11 @@ constructor(private val repository: Repository, private val appSchedulers: AppSc
         disposables.clear()
         disposables.add(repository.selectNewsOrderByPosition()
                 .subscribe({ newsList.postValue(it) },
-                        { Log.d(TAG, "news oder by date", it) }))
+                        { Timber.d(it, "news oder by date") }))
     }
 
     override fun onCleared() {
-        Log.d(TAG, "onCleared")
+        Timber.d("onCleared")
         super.onCleared()
         disposables.clear()
     }
