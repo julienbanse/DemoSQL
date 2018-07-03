@@ -1,9 +1,9 @@
 apply plugin: 'com.android.application'
 
-apply plugin: 'com.squareup.sqldelight'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.squareup.sqldelight.android'
 
 android {
     compileSdkVersion 27
@@ -22,6 +22,7 @@ android {
             }
         }
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -54,9 +55,9 @@ dependencies {
     implementation "com.squareup.leakcanary:leakcanary-android:1.5.4"
 
     //bdd
-    implementation "com.squareup.sqlbrite3:sqlbrite-kotlin:3.2.0"
-    implementation "android.arch.persistence:db-framework:1.0.0"
-    implementation "android.arch.persistence:db:1.0.0"
+    implementation "com.squareup.sqldelight:android-driver:${versions.sqldelight}"
+    implementation "com.squareup.sqldelight:rxjava2-extensions:${versions.sqldelight}"
+    implementation "com.squareup.sqldelight:runtime-jdk:${versions.sqldelight}"
 
     //kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
